@@ -1,0 +1,122 @@
+[
+  {
+    "name": "九层海鲜塔",
+    "url": "https://www.dianping.com/shop/example1",
+    "rating": "4.5",
+    "review_count": "1289条点评",
+    "price": "人均¥115",
+    "address": "黄岛区武夷山路158号",
+    "categories": ["海鲜", "青岛菜"],
+    "source": "dianping"
+  },
+  {
+    "name": "55555BAR",
+    "url": "https://www.dianping.com/shop/example2",
+    "rating": "4.7",
+    "review_count": "876条点评",
+    "price": "人均¥35",
+    "address": "黄岛区太行山路547-1号院内黑色集装箱处",
+    "categories": ["日本料理", "小吃"],
+    "source": "dianping"
+  },
+  {
+    "name": "晓棒食社",
+    "url": "https://www.dianping.com/shop/example3",
+    "rating": "4.3",
+    "review_count": "654条点评",
+    "price": "人均¥129",
+    "address": "黄岛区庐山路6号繁花里14-6名嘉汇南门",
+    "categories": ["火锅", "川菜"],
+    "source": "dianping"
+  },
+  {
+    "name": "前海沿·青岛菜",
+    "url": "https://www.dianping.com/shop/example4",
+    "rating": "4.4",
+    "review_count": "1432条点评",
+    "price": "人均¥98",
+    "address": "黄岛区长江中路419号永旺黄岛购物中心二楼",
+    "categories": ["青岛菜", "海鲜"],
+    "source": "dianping"
+  },
+  {
+    "name": "醉爱吃",
+    "url": "https://www.dianping.com/shop/example5",
+    "rating": "4.2",
+    "review_count": "765条点评",
+    "price": "人均¥74",
+    "address": "黄岛区滨海大道1777号东方影都融创茂3楼",
+    "categories": ["烧烤", "小吃"],
+    "source": "dianping"
+  },
+  {
+    "name": "红树林·骑士部落亲子餐厅",
+    "url": "https://www.dianping.com/shop/example6",
+    "rating": "4.6",
+    "review_count": "987条点评",
+    "price": "人均¥100",
+    "address": "黄岛区滨海大道3588号红树林度假世界珊瑚酒店B0层",
+    "categories": ["西餐", "亲子餐厅"],
+    "source": "dianping"
+  },
+  {
+    "name": "印典印度餐厅",
+    "url": "https://www.meituan.com/shop/example7",
+    "rating": "4.3",
+    "review_count": "543条点评",
+    "price": "人均¥76",
+    "address": "黄岛区灵山卫街道淄江西路1136号嘉年华澳乐购C119号",
+    "categories": ["印度菜", "异国料理"],
+    "source": "meituan"
+  },
+  {
+    "name": "A8海鲜饭店·海鲜烧烤",
+    "url": "https://www.meituan.com/shop/example8",
+    "rating": "4.5",
+    "review_count": "876条点评",
+    "price": "人均¥120",
+    "address": "黄岛区银盛泰博观星海公交站377号",
+    "categories": ["海鲜", "烧烤"],
+    "source": "meituan"
+  },
+  {
+    "name": "长新家和宴·34年青岛老菜",
+    "url": "https://www.meituan.com/shop/example9",
+    "rating": "4.7",
+    "review_count": "1243条点评",
+    "price": "人均¥88",
+    "address": "黄岛区五台山路123号",
+    "categories": ["青岛菜", "家常菜"],
+    "source": "meituan"
+  },
+  {
+    "name": "广顺兴",
+    "url": "https://www.meituan.com/shop/example10",
+    "rating": "4.7",
+    "review_count": "987条点评",
+    "price": "人均¥65",
+    "address": "黄岛区悦邻广场2楼",
+    "categories": ["粤菜", "海鲜"],
+    "source": "meituan"
+  },
+  {
+    "name": "粥全粥到·青岛菜",
+    "url": "https://www.meituan.com/shop/example11",
+    "rating": "4.1",
+    "review_count": "654条点评",
+    "price": "人均¥45",
+    "address": "黄岛区家佳源购物中心3楼",
+    "categories": ["粥品", "青岛菜"],
+    "source": "meituan"
+  },
+  {
+    "name": "馨港渔村·海鲜·家常菜",
+    "url": "https://www.meituan.com/shop/example12",
+    "rating": "4.4",
+    "review_count": "876条点评",
+    "price": "人均¥110",
+    "address": "黄岛区东方影都融创茂店",
+    "categories": ["海鲜", "家常菜"],
+    "source": "meituan"
+  }
+]

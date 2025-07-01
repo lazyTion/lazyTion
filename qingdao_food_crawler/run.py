@@ -2,7 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import argparse
+
+# Add the current directory to the path so we can import the modules
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+
 from crawler import QingdaoFoodCrawler
 from app import app
 

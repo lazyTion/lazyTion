@@ -1,0 +1,14 @@
+2025-07-01 02:44:43,064 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:12000
+ * Running on http://10.2.14.11:12000
+2025-07-01 02:44:43,064 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-01 02:44:43,065 - werkzeug - INFO -  * Restarting with stat
+2025-07-01 02:44:43,579 - werkzeug - WARNING -  * Debugger is active!
+2025-07-01 02:44:43,624 - werkzeug - INFO -  * Debugger PIN: 396-049-523
+2025-07-01 02:44:56,290 - QingdaoFoodCrawler - INFO - Starting to crawl Dianping for Huangdao restaurants, 1 pages
+2025-07-01 02:44:56,290 - QingdaoFoodCrawler - INFO - Crawling page 1/1
+2025-07-01 02:44:58,094 - QingdaoFoodCrawler - WARNING - No restaurants found on page 1. Possibly blocked or reached the end.
+2025-07-01 02:44:58,094 - QingdaoFoodCrawler - INFO - Finished crawling Dianping. Extracted 0 restaurants.
+2025-07-01 02:44:58,094 - QingdaoFoodCrawler - WARNING - No restaurant data to save
+2025-07-01 02:44:58,094 - QingdaoFoodCrawler - WARNING - No restaurant data to save

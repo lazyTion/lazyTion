@@ -1,0 +1,13 @@
+﻿name,url,rating,review_count,price,address,categories,source
+九层海鲜塔,https://www.dianping.com/shop/example1,4.5,1289条点评,人均¥115,黄岛区武夷山路158号,"海鲜, 青岛菜",dianping
+55555BAR,https://www.dianping.com/shop/example2,4.7,876条点评,人均¥35,黄岛区太行山路547-1号院内黑色集装箱处,"日本料理, 小吃",dianping
+晓棒食社,https://www.dianping.com/shop/example3,4.3,654条点评,人均¥129,黄岛区庐山路6号繁花里14-6名嘉汇南门,"火锅, 川菜",dianping
+前海沿·青岛菜,https://www.dianping.com/shop/example4,4.4,1432条点评,人均¥98,黄岛区长江中路419号永旺黄岛购物中心二楼,"青岛菜, 海鲜",dianping
+醉爱吃,https://www.dianping.com/shop/example5,4.2,765条点评,人均¥74,黄岛区滨海大道1777号东方影都融创茂3楼,"烧烤, 小吃",dianping
+红树林·骑士部落亲子餐厅,https://www.dianping.com/shop/example6,4.6,987条点评,人均¥100,黄岛区滨海大道3588号红树林度假世界珊瑚酒店B0层,"西餐, 亲子餐厅",dianping
+印典印度餐厅,https://www.meituan.com/shop/example7,4.3,543条点评,人均¥76,黄岛区灵山卫街道淄江西路1136号嘉年华澳乐购C119号,"印度菜, 异国料理",meituan
+A8海鲜饭店·海鲜烧烤,https://www.meituan.com/shop/example8,4.5,876条点评,人均¥120,黄岛区银盛泰博观星海公交站377号,"海鲜, 烧烤",meituan
+长新家和宴·34年青岛老菜,https://www.meituan.com/shop/example9,4.7,1243条点评,人均¥88,黄岛区五台山路123号,"青岛菜, 家常菜",meituan
+广顺兴,https://www.meituan.com/shop/example10,4.7,987条点评,人均¥65,黄岛区悦邻广场2楼,"粤菜, 海鲜",meituan
+粥全粥到·青岛菜,https://www.meituan.com/shop/example11,4.1,654条点评,人均¥45,黄岛区家佳源购物中心3楼,"粥品, 青岛菜",meituan
+馨港渔村·海鲜·家常菜,https://www.meituan.com/shop/example12,4.4,876条点评,人均¥110,黄岛区东方影都融创茂店,"海鲜, 家常菜",meituan
