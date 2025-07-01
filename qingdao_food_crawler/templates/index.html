@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青岛黄岛美食爬虫</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .restaurant-card {
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .rating {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .price {
+            color: #4caf50;
+        }
+        .category-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .chart-container {
+            height: 300px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1>青岛黄岛美食爬虫</h1>
+                    <p class="lead">探索黄岛区的美食餐厅信息</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crawlModal">
+                        开始爬取
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>数据统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h3 id="total-restaurants">-</h3>
+                                        <p>餐厅总数</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h3 id="average-rating">-</h3>
+                                        <p>平均评分</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h3 id="top-category">-</h3>
+                                        <p>最受欢迎类别</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>餐厅类别分布</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="categories-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>评分分布</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="ratings-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>筛选</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="category-filter">类别</label>
+                                    <select id="category-filter" class="form-select">
+                                        <option value="">全部</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="rating-filter">最低评分</label>
+                                    <select id="rating-filter" class="form-select">
+                                        <option value="">全部</option>
+                                        <option value="4.5">4.5+</option>
+                                        <option value="4">4+</option>
+                                        <option value="3.5">3.5+</option>
+                                        <option value="3">3+</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="source-filter">数据来源</label>
+                                    <select id="source-filter" class="form-select">
+                                        <option value="">全部</option>
+                                        <option value="dianping">大众点评</option>
+                                        <option value="meituan">美团</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">正在加载数据...</p>
+        </div>
+
+        <!-- Restaurant List -->
+        <div class="row" id="restaurant-list">
+            <!-- Restaurant cards will be inserted here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="alert alert-info text-center" style="display: none;">
+            没有找到符合条件的餐厅
+        </div>
+
+        <!-- Download Section -->
+        <div class="row mt-4 mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>下载数据</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a id="download-csv" href="#" class="btn btn-success w-100 mb-2">下载 CSV 格式</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a id="download-json" href="#" class="btn btn-info w-100 mb-2">下载 JSON 格式</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crawl Modal -->
+    <div class="modal fade" id="crawlModal" tabindex="-1" aria-labelledby="crawlModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crawlModalLabel">爬取设置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="crawl-form">
+                        <div class="mb-3">
+                            <label class="form-label">数据来源</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="dianping" id="source-dianping" name="sources" checked>
+                                <label class="form-check-label" for="source-dianping">
+                                    大众点评
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="meituan" id="source-meituan" name="sources" checked>
+                                <label class="form-check-label" for="source-meituan">
+                                    美团
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pages" class="form-label">每个来源爬取页数</label>
+                            <input type="number" class="form-control" id="pages" name="pages" min="1" max="10" value="3">
+                            <div class="form-text">页数越多，获取的数据越多，但耗时也越长</div>
+                        </div>
+                    </form>
+                    <div id="crawl-status" class="alert alert-info" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="start-crawl">开始爬取</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restaurant Detail Modal -->
+    <div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="restaurantModalLabel">餐厅详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="restaurant-detail">
+                    <!-- Restaurant details will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <a id="restaurant-url" href="#" target="_blank" class="btn btn-primary">查看原网页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Global variables
+        let allRestaurants = [];
+        let categoryChart = null;
+        let ratingChart = null;
+
+        // DOM elements
+        const restaurantList = document.getElementById('restaurant-list');
+        const loadingIndicator = document.getElementById('loading');
+        const noResultsMessage = document.getElementById('no-results');
+        const categoryFilter = document.getElementById('category-filter');
+        const ratingFilter = document.getElementById('rating-filter');
+        const sourceFilter = document.getElementById('source-filter');
+        const downloadCsvBtn = document.getElementById('download-csv');
+        const downloadJsonBtn = document.getElementById('download-json');
+        const startCrawlBtn = document.getElementById('start-crawl');
+        const crawlForm = document.getElementById('crawl-form');
+        const crawlStatus = document.getElementById('crawl-status');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            
+            // Add event listeners for filters
+            categoryFilter.addEventListener('change', filterRestaurants);
+            ratingFilter.addEventListener('change', filterRestaurants);
+            sourceFilter.addEventListener('change', filterRestaurants);
+            
+            // Add event listener for crawl button
+            startCrawlBtn.addEventListener('click', startCrawl);
+        });
+
+        // Load restaurant data
+        function loadData() {
+            showLoading(true);
+            
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        allRestaurants = data.data;
+                        displayRestaurants(allRestaurants);
+                        updateDownloadLinks(data.file);
+                        loadStats();
+                    } else {
+                        showError('No data available. Please run the crawler first.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading data:', error);
+                    showError('Error loading data. Please try again later.');
+                })
+                .finally(() => {
+                    showLoading(false);
+                });
+        }
+
+        // Load statistics
+        function loadStats() {
+            fetch('/stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        updateStats(data.stats);
+                        updateCharts(data.stats);
+                        populateCategoryFilter(data.stats.top_categories);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading stats:', error);
+                });
+        }
+
+        // Update statistics display
+        function updateStats(stats) {
+            document.getElementById('total-restaurants').textContent = stats.total_restaurants;
+            document.getElementById('average-rating').textContent = stats.average_rating ? stats.average_rating.toFixed(1) : '-';
+            
+            // Find top category
+            const topCategories = Object.entries(stats.top_categories);
+            if (topCategories.length > 0) {
+                document.getElementById('top-category').textContent = topCategories[0][0];
+            }
+        }
+
+        // Update charts
+        function updateCharts(stats) {
+            // Categories chart
+            const categoriesCtx = document.getElementById('categories-chart').getContext('2d');
+            const categoriesData = Object.entries(stats.top_categories)
+                .slice(0, 5)
+                .map(([category, count]) => ({ category, count }));
+            
+            if (categoryChart) {
+                categoryChart.destroy();
+            }
+            
+            categoryChart = new Chart(categoriesCtx, {
+                type: 'bar',
+                data: {
+                    labels: categoriesData.map(item => item.category),
+                    datasets: [{
+                        label: '餐厅数量',
+                        data: categoriesData.map(item => item.count),
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Ratings chart
+            const ratingsCtx = document.getElementById('ratings-chart').getContext('2d');
+            const ratingsData = Object.entries(stats.rating_distribution)
+                .filter(([rating]) => rating !== 'No rating')
+                .sort((a, b) => parseFloat(a[0]) - parseFloat(b[0]));
+            
+            if (ratingChart) {
+                ratingChart.destroy();
+            }
+            
+            ratingChart = new Chart(ratingsCtx, {
+                type: 'line',
+                data: {
+                    labels: ratingsData.map(item => item[0]),
+                    datasets: [{
+                        label: '餐厅数量',
+                        data: ratingsData.map(item => item[1]),
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate category filter
+        function populateCategoryFilter(categories) {
+            // Clear existing options except the first one
+            while (categoryFilter.options.length > 1) {
+                categoryFilter.remove(1);
+            }
+            
+            // Add new options
+            Object.keys(categories).forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+        }
+
+        // Display restaurants
+        function displayRestaurants(restaurants) {
+            restaurantList.innerHTML = '';
+            
+            if (restaurants.length === 0) {
+                noResultsMessage.style.display = 'block';
+                return;
+            }
+            
+            noResultsMessage.style.display = 'none';
+            
+            restaurants.forEach((restaurant, index) => {
+                const card = document.createElement('div');
+                card.className = 'col-md-4';
+                card.innerHTML = `
+                    <div class="card restaurant-card">
+                        <div class="card-body">
+                            <h5 class="card-title">${restaurant.name}</h5>
+                            <p class="card-text">
+                                <span class="rating">${restaurant.rating}</span>
+                                <span class="price float-end">${restaurant.price}</span>
+                            </p>
+                            <p class="card-text small text-muted">${restaurant.address}</p>
+                            <p class="card-text">
+                                ${(restaurant.categories || []).map(cat => 
+                                    `<span class="badge bg-secondary category-badge">${cat}</span>`
+                                ).join('')}
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">来源: ${restaurant.source === 'dianping' ? '大众点评' : '美团'}</small>
+                            </p>
+                            <button class="btn btn-sm btn-outline-primary view-details" data-index="${index}">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                `;
+                restaurantList.appendChild(card);
+            });
+            
+            // Add event listeners for detail buttons
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showRestaurantDetails(restaurants[index]);
+                });
+            });
+        }
+
+        // Show restaurant details in modal
+        function showRestaurantDetails(restaurant) {
+            const detailContainer = document.getElementById('restaurant-detail');
+            const modalTitle = document.getElementById('restaurantModalLabel');
+            const restaurantUrl = document.getElementById('restaurant-url');
+            
+            modalTitle.textContent = restaurant.name;
+            restaurantUrl.href = restaurant.url;
+            
+            detailContainer.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>评分:</strong> <span class="rating">${restaurant.rating}</span></p>
+                        <p><strong>价格:</strong> <span class="price">${restaurant.price}</span></p>
+                        <p><strong>地址:</strong> ${restaurant.address}</p>
+                        <p><strong>来源:</strong> ${restaurant.source === 'dianping' ? '大众点评' : '美团'}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>类别:</strong></p>
+                        <p>
+                            ${(restaurant.categories || []).map(cat => 
+                                `<span class="badge bg-secondary category-badge">${cat}</span>`
+                            ).join('')}
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('restaurantModal'));
+            modal.show();
+        }
+
+        // Filter restaurants based on selected filters
+        function filterRestaurants() {
+            const category = categoryFilter.value;
+            const minRating = ratingFilter.value;
+            const source = sourceFilter.value;
+            
+            let filtered = allRestaurants;
+            
+            // Filter by category
+            if (category) {
+                filtered = filtered.filter(restaurant => {
+                    const categories = Array.isArray(restaurant.categories) 
+                        ? restaurant.categories 
+                        : (restaurant.categories || '').split(', ');
+                    return categories.includes(category);
+                });
+            }
+            
+            // Filter by rating
+            if (minRating) {
+                filtered = filtered.filter(restaurant => {
+                    const rating = parseFloat(restaurant.rating);
+                    return !isNaN(rating) && rating >= parseFloat(minRating);
+                });
+            }
+            
+            // Filter by source
+            if (source) {
+                filtered = filtered.filter(restaurant => restaurant.source === source);
+            }
+            
+            displayRestaurants(filtered);
+        }
+
+        // Update download links
+        function updateDownloadLinks(jsonFile) {
+            const csvFile = jsonFile.replace('.json', '.csv');
+            downloadCsvBtn.href = `/download/${csvFile}`;
+            downloadJsonBtn.href = `/download/${jsonFile}`;
+        }
+
+        // Start crawling
+        function startCrawl() {
+            // Get form data
+            const formData = new FormData(crawlForm);
+            
+            // Check if at least one source is selected
+            if (!formData.getAll('sources').length) {
+                showCrawlStatus('error', '请至少选择一个数据来源');
+                return;
+            }
+            
+            // Disable button and show status
+            startCrawlBtn.disabled = true;
+            showCrawlStatus('info', '正在爬取数据，请稍候...');
+            
+            // Send request
+            fetch('/crawl', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showCrawlStatus('success', `爬取成功！共获取 ${data.count} 家餐厅信息`);
+                    
+                    // Reload data after a short delay
+                    setTimeout(() => {
+                        loadData();
+                        
+                        // Close modal after a delay
+                        setTimeout(() => {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('crawlModal'));
+                            modal.hide();
+                            
+                            // Reset status and button
+                            startCrawlBtn.disabled = false;
+                            crawlStatus.style.display = 'none';
+                        }, 2000);
+                    }, 1000);
+                } else {
+                    showCrawlStatus('error', data.message || '爬取失败');
+                    startCrawlBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error during crawl:', error);
+                showCrawlStatus('error', '爬取过程中发生错误');
+                startCrawlBtn.disabled = false;
+            });
+        }
+
+        // Show crawl status
+        function showCrawlStatus(type, message) {
+            crawlStatus.className = `alert alert-${type === 'error' ? 'danger' : type}`;
+            crawlStatus.textContent = message;
+            crawlStatus.style.display = 'block';
+        }
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            loadingIndicator.style.display = show ? 'block' : 'none';
+        }
+
+        // Show error message
+        function showError(message) {
+            noResultsMessage.textContent = message;
+            noResultsMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
