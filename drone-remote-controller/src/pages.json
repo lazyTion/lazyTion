@@ -1,0 +1,45 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "Drone Controller",
+				"navigationBarBackgroundColor": "#007AFF",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"text": "Help",
+								"fontSize": "14px",
+								"color": "#FFFFFF"
+							}
+						]
+					}
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "Drone Remote Controller",
+		"navigationBarBackgroundColor": "#007AFF",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"background": "#F8F8F8"
+		}
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"borderStyle": "black",
+		"backgroundColor": "#FFFFFF",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "Controller"
+			}
+		]
+	}
+}
