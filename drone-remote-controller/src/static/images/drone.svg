@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Drone Body -->
+        <rect fill="#333333" x="80" y="80" width="40" height="40" rx="5"></rect>
+        
+        <!-- Propellers -->
+        <circle fill="#007AFF" cx="50" cy="50" r="20"></circle>
+        <circle fill="#007AFF" cx="150" cy="50" r="20"></circle>
+        <circle fill="#007AFF" cx="50" cy="150" r="20"></circle>
+        <circle fill="#007AFF" cx="150" cy="150" r="20"></circle>
+        
+        <!-- Arms -->
+        <rect fill="#666666" x="60" y="95" width="30" height="10"></rect>
+        <rect fill="#666666" x="110" y="95" width="30" height="10"></rect>
+        <rect fill="#666666" x="95" y="60" width="10" height="30"></rect>
+        <rect fill="#666666" x="95" y="110" width="10" height="30"></rect>
+        
+        <!-- LED -->
+        <circle fill="#FF3B30" cx="100" cy="70" r="5"></circle>
+        
+        <!-- Camera -->
+        <rect fill="#999999" x="90" y="110" width="20" height="10" rx="2"></rect>
+    </g>
+</svg>
